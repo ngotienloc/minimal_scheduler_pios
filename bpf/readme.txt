@@ -43,3 +43,8 @@ void BPF_STRUCT_OPS(mlfq_running, struct task_struct *p)
 }
 Nhiệm vụ: Giám sát việc sử dụng CPU time slice của một tác vụ đang chạy và hạ cấp 
 nó xuống hàng đợi ưu tiên thấp hơn khi nó sử dụng hết thời gian được cấp. 
+- Lấy id của tiến trình đang chạy
+    u32 pid = p->pid
+- Tìm kiếm BPF map "task_slice" lưu trữ thông tin thời gian sử dụng còn lại của mỗi tiến trình. 
+    bpf_map_lookup_elem(&task_slice, &pid)
+    
