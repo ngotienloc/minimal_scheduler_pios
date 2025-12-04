@@ -1,13 +1,13 @@
 #!/bin/bash
-# CPU-bound test
-for i in {1..4}; do
-    ./examples/cpu_bound &
-done
+set -euo pipefail
 
-# I/O-bound test
-for i in {1..2}; do
-    ./examples/io_bound &
-done
+# build example
+gcc -O2 examples/cpu_bound.c -o examples/cpu_bound
 
+# spawn several CPU-bound tasks
+./examples/cpu_bound &
+./examples/cpu_bound &
+./examples/cpu_bound &
+
+echo "[INFO] started cpu_bound x3"
 wait
-echo "Workload test finished"

@@ -1,22 +1,15 @@
-# Compiler settings
+# Makefile
 BPF_CLANG ?= clang
-BPF_LLVM  ?= llc
 
-# Paths
 SRC_DIR   := bpf
 OBJ_DIR   := build
 
 SRC       := $(SRC_DIR)/mlfq.bpf.c
 TARGET    := $(OBJ_DIR)/mlfq.bpf.o
 
-# Includes for vmlinux.h + scx_common
 INCLUDES  := -I. -Iinclude
 
-# Build flags recommended by Kernel team (stable)
-CFLAGS = -O2 -g -target bpf \
-         -Wall -Werror \
-         -D__TARGET_ARCH_x86 \
-         $(INCLUDES)
+CFLAGS = -O2 -g -target bpf -Wall -Werror $(INCLUDES)
 
 .PHONY: all clean prepare
 

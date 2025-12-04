@@ -1,9 +1,8 @@
+// cpu_bound.c
 #include <stdio.h>
-
-int main() {
+int main(void){
     volatile unsigned long x = 0;
-    for (unsigned long i = 0; i < 1000000000UL; i++)
-        x += i;
-    printf("CPU-bound task done: %lu\n", x);
+    for (unsigned long i = 0; i < 500000000UL; ++i) x += i;
+    printf("done %lu\n", x);
     return 0;
 }
