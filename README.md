@@ -48,9 +48,9 @@ Cài các gói cần thiết:
 
 ```
 sudo apt update
-sudo apt install -y build-essential bc bison flex libssl-dev libncurses-dev \
-    libelf-dev libelf1 dwarves device-tree-compiler \
-    git rsync python3 python3-pip
+sudo apt sudo apt install -y build-essential bc bison flex libssl-dev libncurses-dev libelf-dev libelf1 dwarves device-tree-compiler git rsync python3 python3-pip gcc-aarch64-linux-gnus-dev \
+libelf-dev libelf1 dwarves device-tree-compiler \
+git rsync python3 python3-pip
 ```
 
 ---
@@ -85,7 +85,9 @@ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 ```
 
 Trong menu, bật các mục sau:
-
+Cần bật Kernel hacking trước: 
+Ấn / vòa tìm kiếm tìm: CONFIG_DEBUG_INFO => Ấn 1 rồi tắt Reduce debugging information => bật [*] Generate BTF type information   
+Sau đó quay lại General setup bật      [ ] Extensible Scheduling Class (NEW)   
 ### 1️⃣ Bật hệ thống BPF
 
 * **General setup → BPF subsystem**
