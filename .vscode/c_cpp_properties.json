@@ -1,0 +1,28 @@
+// File: ~/pios/.vscode/c_cpp_properties.json
+
+{
+    "configurations": [
+        {
+            "name": "Linux MLFQ Kernel",
+            "includePath": [
+                "${workspaceFolder}/**",
+                // 1. Header chính của Kernel
+                "${workspaceFolder}/kernel/linux/include",
+                "${workspaceFolder}/kernel/linux/arch/arm64/include",
+                
+                // 2. Header được tạo ra trong quá trình config/build
+                "${workspaceFolder}/kernel/linux/arch/arm64/include/generated",
+                "${workspaceFolder}/kernel/linux/include/generated",
+
+                // 3. Đường dẫn cần thiết cho scheduler
+                "${workspaceFolder}/kernel/linux/kernel/sched"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/aarch64-linux-gnu-gcc", // Sử dụng cross-compiler
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-arm64"
+        }
+    ],
+    "version": 4
+}

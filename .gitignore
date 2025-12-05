@@ -1,0 +1,32 @@
+# --- .gitignore cho PIOS MLFQ Project ---
+
+# 1. Bỏ qua Source Kernel gốc & Config
+/kernel/linux/
+/kernel/.config
+
+# 2. Bỏ qua sản phẩm build (Artifacts)
+/build_artifacts/
+/kernel/Image
+/kernel/System.map
+/kernel/vmlinux
+/kernel/modules/
+
+# 3. Bỏ qua Image & SD Card
+/images/
+*.img
+*.img.xz
+/sdcard/
+/mnt/
+
+# 4. Bỏ qua file chạy Binary (chỉ giữ code C)
+/scheduler/test/gen_tasks
+
+# 5. File tạm hệ thống
+*.o
+*.ko
+*.mod
+*.symvers
+*.order
+*~
+
+/device-tree/

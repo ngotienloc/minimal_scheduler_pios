@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "types.h": "c",
+        "mutex_types.h": "c",
+        "plist_types.h": "c",
+        "current.h": "c",
+        "sched.h": "c",
+        "list.h": "c",
+        "mm.h": "c"
+    }
+}
