@@ -48,7 +48,7 @@ Cài các gói cần thiết:
 
 ```
 sudo apt update
-sudo apt sudo apt install -y build-essential bc bison flex libssl-dev libncurses-dev libelf-dev libelf1 dwarves device-tree-compiler git rsync python3 python3-pip gcc-aarch64-linux-gnus-dev \
+sudo apt install -y build-essential bc bison flex libssl-dev libncurses-dev libelf-dev libelf1 dwarves device-tree-compiler git rsync python3 python3-pip gcc-aarch64-linux-gnus-dev \
 libelf-dev libelf1 dwarves device-tree-compiler \
 git rsync python3 python3-pip
 ```
