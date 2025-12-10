@@ -1,228 +1,332 @@
-// bpf/mlfq_switch.bpf.c
+// bpf/mlfq_final_production_v3.bpf.c
 #include "vmlinux.h"
 #include <bpf/bpf_helpers.h>
 #include <bpf/bpf_tracing.h>
+#include <bpf/bpf_core_read.h>
 #include "scx_common.bpf.h"
 
 char LICENSE[] SEC("license") = "GPL";
 
-/* Queue levels */
+/* --- CONFIG --- */
 #define DSQ_HIGHEST 0
 #define DSQ_HIGH    1
 #define DSQ_MED     2
 #define DSQ_LOW     3
 #define NUM_DSQ     4
 
-/* Time slice per queue (ns) */
+/* Time slices in nanoseconds */
 const volatile u64 SLICE_NS[NUM_DSQ] = {
-    [DSQ_HIGHEST] = 1 * 1000 * 1000,  /* 1 ms */
-    [DSQ_HIGH]    = 2 * 1000 * 1000,  /* 2 ms */
-    [DSQ_MED]     = 4 * 1000 * 1000,  /* 4 ms */
-    [DSQ_LOW]     = 8 * 1000 * 1000   /* 8 ms */
+    [DSQ_HIGHEST] = 5ULL * 1000 * 1000,   /* 5ms */
+    [DSQ_HIGH]    = 10ULL * 1000 * 1000,
+    [DSQ_MED]     = 20ULL * 1000 * 1000,
+    [DSQ_LOW]     = 40ULL * 1000 * 1000
 };
 
-/* boost threshold */
-const volatile u64 BOOST_NS = 50 * 1000 * 1000;  // 50ms
+const volatile u64 BOOST_NS = 500ULL * 1000 * 1000; /* 500ms */
 
-/* remaining slice per PID */
+/* --- MAPS --- */
+
+/* Remaining time slice per PID */
 struct {
     __uint(type, BPF_MAP_TYPE_HASH);
-    __uint(max_entries, 4096);
-    __type(key, u32);
+    __uint(max_entries, 8192);
+    __type(key, s32);
     __type(value, u64);
 } task_slice SEC(".maps");
 
-/* queue level per PID */
+/* Current queue level per PID */
 struct {
     __uint(type, BPF_MAP_TYPE_HASH);
-    __uint(max_entries, 4096);
-    __type(key, u32);
+    __uint(max_entries, 8192);
+    __type(key, s32);
     __type(value, u32);
 } task_queue SEC(".maps");
 
-/* time when task started running */
+/* Start timestamp while running */
 struct {
     __uint(type, BPF_MAP_TYPE_HASH);
-    __uint(max_entries, 4096);
-    __type(key, u32);
+    __uint(max_entries, 8192);
+    __type(key, s32);
     __type(value, u64);
 } task_start_ns SEC(".maps");
 
-/* last enqueue timestamp */
+/* Enqueue timestamp for aging check */
 struct {
     __uint(type, BPF_MAP_TYPE_HASH);
-    __uint(max_entries, 4096);
-    __type(key, u32);
+    __uint(max_entries, 8192);
+    __type(key, s32);
     __type(value, u64);
 } task_enq_ns SEC(".maps");
 
+/* CPU -> current PID map */
+#define MAX_CPUS 1024
+struct {
+    __uint(type, BPF_MAP_TYPE_ARRAY);
+    __uint(max_entries, MAX_CPUS);
+    __type(key, u32);
+    __type(value, s32);
+} cpu_curr_pid SEC(".maps");
 
-/* Clamp helper */
-static __always_inline u32 clamp_level(u32 lvl)
-{
-    if (lvl >= NUM_DSQ)
-        return NUM_DSQ - 1;
-    return lvl;
+/* Iterator cursor for aging. -1 means start from beginning */
+struct {
+    __uint(type, BPF_MAP_TYPE_ARRAY);
+    __uint(max_entries, 1);
+    __type(key, u32);
+    __type(value, s32);
+} aging_cursor SEC(".maps");
+
+
+/* --- INIT --- */
+s32 BPF_STRUCT_OPS(mlfq_init) {
+    /* Initialize DSQs */
+    for (int i = 0; i < NUM_DSQ; i++) {
+        if (scx_bpf_create_dsq(i, -1) != 0) {
+            return -1;
+        }
+    }
+
+    /* FIX: Initialize aging cursor to -1 (sentinel) */
+    /* Map mặc định là 0, ta cần set -1 để báo hiệu "bắt đầu từ đầu" */
+    u32 idx = 0;
+    s32 start_sentinel = -1;
+    bpf_map_update_elem(&aging_cursor, &idx, &start_sentinel, BPF_ANY);
+
+    bpf_printk("mlfq: init v3 OK\n");
+    return 0;
 }
 
+/* --- EXIT TASK --- */
+void BPF_STRUCT_OPS(mlfq_exit_task, struct task_struct *p) {
+    if (!p) return;
+    s32 pid = BPF_CORE_READ(p, pid);
+    if (pid == 0) return;
 
-/* ENABLE: initialize task -> highest queue */
-void BPF_STRUCT_OPS(mlfq_enable, struct task_struct *p, struct scx_enable_args *args)
-{
-    if (!p)
-        return;
+    bpf_map_delete_elem(&task_slice, &pid);
+    bpf_map_delete_elem(&task_queue, &pid);
+    bpf_map_delete_elem(&task_start_ns, &pid);
+    bpf_map_delete_elem(&task_enq_ns, &pid);
 
-    u32 pid = p->pid;
+    /* Safe CPU cleanup */
+    s32 cpu_of_task = scx_bpf_task_cpu(p);
+    if (cpu_of_task >= 0 && cpu_of_task < MAX_CPUS) {
+        u32 cpu_idx = (u32)cpu_of_task;
+        s32 *curr = bpf_map_lookup_elem(&cpu_curr_pid, &cpu_idx);
+        if (curr && *curr == pid) {
+            s32 zero = 0;
+            bpf_map_update_elem(&cpu_curr_pid, &cpu_idx, &zero, BPF_ANY);
+        }
+    }
+}
+
+/* --- ENABLE --- */
+void BPF_STRUCT_OPS(mlfq_enable, struct task_struct *p) {
+    if (!p) return;
+    s32 pid = BPF_CORE_READ(p, pid);
+    if (pid == 0) return;
+
     u32 lvl = DSQ_HIGHEST;
     u64 slice = SLICE_NS[lvl];
 
     bpf_map_update_elem(&task_queue, &pid, &lvl, BPF_ANY);
     bpf_map_update_elem(&task_slice, &pid, &slice, BPF_ANY);
-
-    bpf_printk("mlfq: enable pid=%d comm=%s", pid, p->comm);
+    /* Clear stale data */
+    bpf_map_delete_elem(&task_enq_ns, &pid);
+    bpf_map_delete_elem(&task_start_ns, &pid);
 }
 
-
-/* ENQUEUE: put task in queue with remaining slice */
+/* --- ENQUEUE --- */
 void BPF_STRUCT_OPS(mlfq_enqueue, struct task_struct *p, u64 enq_flags)
 {
-    if (!p)
-        return;
-
-    u32 pid = p->pid;
+    if (!p) return;
+    s32 pid = BPF_CORE_READ(p, pid);
+    if (pid == 0) return; /* Skip swapper explicitly */
+    
+    /* 1) Record enqueue time */
     u64 now = bpf_ktime_get_ns();
     bpf_map_update_elem(&task_enq_ns, &pid, &now, BPF_ANY);
 
+    /* 2) Fetch logic */
+    u32 lvl = DSQ_HIGHEST;
+    u64 slice = SLICE_NS[lvl];
     u32 *plevel = bpf_map_lookup_elem(&task_queue, &pid);
     u64 *pslice = bpf_map_lookup_elem(&task_slice, &pid);
 
-    /* Not initialized? → put to top */
-    if (!plevel || !pslice) {
-        u32 lvl = DSQ_HIGHEST;
-        u64 slice = SLICE_NS[lvl];
+    if (plevel && pslice) {
+        lvl = *plevel;
+        slice = *pslice;
+    } else {
         bpf_map_update_elem(&task_queue, &pid, &lvl, BPF_ANY);
         bpf_map_update_elem(&task_slice, &pid, &slice, BPF_ANY);
-        scx_bpf_dsq_insert(p, lvl, slice, enq_flags);
-        return;
     }
 
-    scx_bpf_dsq_insert(p, *plevel, *pslice, enq_flags);
+    /* 3) Insert */
+    scx_bpf_dsq_insert(p, lvl, slice, enq_flags);
+
+    /* 4) Preemption check */
+    int cpu = scx_bpf_task_cpu(p);
+    if (cpu >= 0 && cpu < MAX_CPUS) {
+        u32 cpu_idx = (u32)cpu;
+        s32 *curr_pid_ptr = bpf_map_lookup_elem(&cpu_curr_pid, &cpu_idx);
+        
+        if (curr_pid_ptr && *curr_pid_ptr > 0 && *curr_pid_ptr != pid) {
+            s32 curr_pid = *curr_pid_ptr;
+            u32 curr_lvl = DSQ_LOW; 
+            u32 *cl = bpf_map_lookup_elem(&task_queue, &curr_pid);
+            if (cl) curr_lvl = *cl;
+
+            /* Preempt if new task has higher priority (lower lvl) */
+            if (lvl < curr_lvl) {
+                scx_bpf_kick_cpu(cpu, SCX_KICK_PREEMPT);
+            }
+        }
+    }
 }
 
-
-/* DISPATCH: try queues high → low + Boost aging */
+/* --- DISPATCH --- */
 void BPF_STRUCT_OPS(mlfq_dispatch, s32 cpu, struct task_struct *prev)
 {
     u64 now = bpf_ktime_get_ns();
-    u32 key;
+    u32 cursor_idx = 0;
+    
+    /* Lấy vị trí duyệt map lần trước */
+    s32 *cursor_ptr = bpf_map_lookup_elem(&aging_cursor, &cursor_idx);
+    s32 current_key = -1;
+    if (cursor_ptr) current_key = *cursor_ptr;
 
-    /* Aging: check only 1 PID */
-    if (bpf_map_get_next_key(&task_enq_ns, NULL, &key) == 0) {
-        u64 *t = bpf_map_lookup_elem(&task_enq_ns, &key);
-        if (t && now - *t >= BOOST_NS) {
-            u32 newlvl = DSQ_HIGHEST;
-            u64 newslice = SLICE_NS[newlvl];
-
-            bpf_map_update_elem(&task_queue, &key, &newlvl, BPF_ANY);
-            bpf_map_update_elem(&task_slice, &key, &newslice, BPF_ANY);
-
-            /* avoid boosting again immediately */
-            bpf_map_update_elem(&task_enq_ns, &key, &now, BPF_ANY);
-
-            bpf_printk("mlfq: BOOST pid=%d to lvl0", key);
+    s32 next_key;
+    
+    /* FIX: Logic duyệt map an toàn với sentinel -1 */
+    #pragma unroll
+    for (int i = 0; i < 5; i++) {
+        int ret;
+        if (current_key == -1) {
+            /* Nếu key là -1, gọi với NULL để lấy phần tử ĐẦU TIÊN của map */
+            ret = bpf_map_get_next_key(&task_enq_ns, NULL, &next_key);
+        } else {
+            /* Nếu key khác -1, tìm key kế tiếp */
+            ret = bpf_map_get_next_key(&task_enq_ns, &current_key, &next_key);
         }
-    }
 
-    /* Pick from queues */
-    for (int lvl = 0; lvl < NUM_DSQ; lvl++) {
-        if (scx_bpf_dsq_move_to_local(lvl))
+        if (ret != 0) {
+            /* Hết map, reset về -1 để lần sau duyệt lại từ đầu */
+            current_key = -1;
+            break; 
+        }
+
+        /* FIX: Bỏ qua pid 0 nếu vô tình lọt vào */
+        if (next_key == 0) {
+            current_key = next_key;
+            continue;
+        }
+
+        /* Check aging */
+        u64 *tenq = bpf_map_lookup_elem(&task_enq_ns, &next_key);
+        if (tenq && (now - *tenq > BOOST_NS)) {
+            /* Boost task */
+            u32 newlvl = DSQ_HIGHEST;
+            u64 newslice = SLICE_NS[DSQ_HIGHEST];
+            bpf_map_update_elem(&task_queue, &next_key, &newlvl, BPF_ANY);
+            bpf_map_update_elem(&task_slice, &next_key, &newslice, BPF_ANY);
+            /* Reset waiting time to avoid double boost */
+            bpf_map_update_elem(&task_enq_ns, &next_key, &now, BPF_ANY);
+        }
+        
+        current_key = next_key;
+    }
+    
+    /* Lưu lại cursor cho lần dispatch sau */
+    bpf_map_update_elem(&aging_cursor, &cursor_idx, &current_key, BPF_ANY);
+
+    /* Dispatch tasks */
+    for (int i = 0; i < NUM_DSQ; i++) {
+        if (scx_bpf_dsq_move_to_local(i))
             return;
     }
 }
 
-
-/* SWITCH: accounting + demotion */
-void BPF_STRUCT_OPS(mlfq_switch, struct task_struct *prev, struct task_struct *next)
+/* --- STOPPING --- */
+void BPF_STRUCT_OPS(mlfq_stopping, struct task_struct *p, bool runnable)
 {
+    if (!p) return;
+    s32 pid = BPF_CORE_READ(p, pid);
+    if (pid == 0) return;
+
     u64 now = bpf_ktime_get_ns();
+    u64 *pstart = bpf_map_lookup_elem(&task_start_ns, &pid);
+    u64 *pslice = bpf_map_lookup_elem(&task_slice, &pid);
+    u32 *plevel = bpf_map_lookup_elem(&task_queue, &pid);
 
-    /* Handle prev */
-    if (prev) {
-        u32 pid = prev->pid;
+    if (pstart && pslice && plevel) {
+        u64 elapsed = now - *pstart;
+        u64 remaining = *pslice;
 
-        u64 *pstart = bpf_map_lookup_elem(&task_start_ns, &pid);
-        u64 *pslice = bpf_map_lookup_elem(&task_slice, &pid);
-        u32 *plevel = bpf_map_lookup_elem(&task_queue, &pid);
+        if (elapsed >= remaining) remaining = 0;
+        else remaining -= elapsed;
 
-        if (pstart && pslice && plevel) {
-            u64 elapsed = now - *pstart;
+        if (remaining == 0) {
+            u32 old_lvl = *plevel;
+            u32 next_lvl = (old_lvl < NUM_DSQ - 1) ? old_lvl + 1 : old_lvl;
+            u64 reset_slice = SLICE_NS[next_lvl];
 
-            if (elapsed >= *pslice)
-                *pslice = 0;
-            else
-                *pslice -= elapsed;
-
-            /* Demote if slice used up */
-            if (*pslice == 0) {
-                if (*plevel < NUM_DSQ - 1) {
-                    u32 nl = *plevel + 1;
-                    nl = clamp_level(nl);
-                    u64 ns = SLICE_NS[nl];
-                    bpf_map_update_elem(&task_queue, &pid, &nl, BPF_ANY);
-                    bpf_map_update_elem(&task_slice, &pid, &ns, BPF_ANY);
-
-                    bpf_printk("mlfq: demote pid=%d %d->%d", pid, *plevel, nl);
-                } else {
-                    /* lowest → refresh slice */
-                    u64 ns = SLICE_NS[*plevel];
-                    bpf_map_update_elem(&task_slice, &pid, &ns, BPF_ANY);
-                }
-            } else {
-                bpf_map_update_elem(&task_slice, &pid, pslice, BPF_ANY);
-            }
+            bpf_map_update_elem(&task_queue, &pid, &next_lvl, BPF_ANY);
+            bpf_map_update_elem(&task_slice, &pid, &reset_slice, BPF_ANY);
+        } else {
+            bpf_map_update_elem(&task_slice, &pid, &remaining, BPF_ANY);
         }
-
-        if (pstart)
-            bpf_map_delete_elem(&task_start_ns, &pid);
     }
 
+    bpf_map_delete_elem(&task_start_ns, &pid);
 
-    /* Handle next */
-    if (next) {
-        u32 pid = next->pid;
-        u64 start = now;
-
-        /* task is running → clear enqueue timestamp */
-        bpf_map_delete_elem(&task_enq_ns, &pid);
-
-        bpf_map_update_elem(&task_start_ns, &pid, &start, BPF_ANY);
-
-        u32 *plevel = bpf_map_lookup_elem(&task_queue, &pid);
-        u64 *pslice = bpf_map_lookup_elem(&task_slice, &pid);
-
-        if (!plevel || !pslice) {
-            u32 lvl = DSQ_HIGHEST;
-            u64 slice = SLICE_NS[lvl];
-            bpf_map_update_elem(&task_queue, &pid, &lvl, BPF_ANY);
-            bpf_map_update_elem(&task_slice, &pid, &slice, BPF_ANY);
+    int cpu = scx_bpf_task_cpu(p);
+    if (cpu >= 0 && cpu < MAX_CPUS) {
+        u32 cpu_idx = (u32)cpu;
+        s32 *curr = bpf_map_lookup_elem(&cpu_curr_pid, &cpu_idx);
+        if (curr && *curr == pid) {
+            s32 zero = 0;
+            bpf_map_update_elem(&cpu_curr_pid, &cpu_idx, &zero, BPF_ANY);
         }
     }
 }
 
-
-/* EXIT */
-void BPF_STRUCT_OPS(mlfq_exit, struct scx_exit_info *ei)
+/* --- RUNNING --- */
+void BPF_STRUCT_OPS(mlfq_running, struct task_struct *p)
 {
-    bpf_printk("mlfq: exit\n");
+    if (!p) return;
+    s32 pid = BPF_CORE_READ(p, pid);
+    if (pid == 0) return;
+    
+    u32 cpu = bpf_get_smp_processor_id();
+    if (cpu < MAX_CPUS) {
+        bpf_map_update_elem(&cpu_curr_pid, &cpu, &pid, BPF_ANY);
+    }
+
+    u64 now = bpf_ktime_get_ns();
+    /* Task chạy thì không còn "waiting" nữa -> xóa khỏi map aging check */
+    bpf_map_delete_elem(&task_enq_ns, &pid);
+    bpf_map_update_elem(&task_start_ns, &pid, &now, BPF_ANY);
+    
+    if (!bpf_map_lookup_elem(&task_queue, &pid)) {
+        u32 lvl = DSQ_HIGHEST;
+        u64 slice = SLICE_NS[lvl];
+        bpf_map_update_elem(&task_queue, &pid, &lvl, BPF_ANY);
+        bpf_map_update_elem(&task_slice, &pid, &slice, BPF_ANY);
+    }
 }
 
-/* Register ops */
+/* --- EXIT MODULE --- */
+void BPF_STRUCT_OPS(mlfq_exit, struct scx_exit_info *ei) {
+    bpf_printk("mlfq: unloaded\n");
+}
+
 SEC(".struct_ops.link")
 struct sched_ext_ops mlfq_ops = {
-    .enable   = (void *)mlfq_enable,
-    .enqueue  = (void *)mlfq_enqueue,
-    .dispatch = (void *)mlfq_dispatch,
-    .switch   = (void *)mlfq_switch,
-    .exit     = (void *)mlfq_exit,
-    .name     = "mlfq_4q_switch",
+    .enable     = (void *)mlfq_enable,
+    .enqueue    = (void *)mlfq_enqueue,
+    .dispatch   = (void *)mlfq_dispatch,
+    .stopping   = (void *)mlfq_stopping,
+    .running    = (void *)mlfq_running,
+    .exit       = (void *)mlfq_exit,
+    .exit_task  = (void *)mlfq_exit_task,
+    .init       = (void *)mlfq_init,
+    .name       = "mlfq",
 };
