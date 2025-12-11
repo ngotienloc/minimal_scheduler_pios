@@ -6,12 +6,13 @@ BPFTOOL ?= bpftool
 # Tên file loader chạy trên userspace
 TARGET := mlfq_runner
 
-# Tên file workload test (tự động biên dịch cpu_bound)
-TEST_TARGET := cpu_bound
+# Tên file workload test (Tạm tắt nếu chưa có file code)
+# TEST_TARGET := cpu_bound
 
-# ĐƯỜNG DẪN QUAN TRỌNG (Dựa theo ảnh của bạn)
+# ĐƯỜNG DẪN (Đã chỉnh lại cho dễ dùng)
+# Giả sử bạn để file .bpf.c ngay thư mục hiện tại hoặc trong thư mục bpf/
+# Nếu bạn để file ngay thư mục ngoài, hãy sửa dòng dưới thành: BPF_SRC := mlfq.bpf.c
 BPF_SRC := bpf/mlfq.bpf.c
-TEST_SRC := examples/cpu_bound.c
 
 # File kết quả trung gian
 BPF_OBJ := $(OUTPUT)/mlfq.bpf.o
@@ -21,16 +22,16 @@ SKEL_H := $(OUTPUT)/mlfq.skel.h
 ARCH := $(shell uname -m | sed 's/x86_64/x86/' | sed 's/aarch64/arm64/')
 
 # Include Path:
-# -I$(OUTPUT): để tìm vmlinux.h, mlfq.skel.h
-# -Ibpf: để tìm scx_common.bpf.h (nếu bạn để nó trong thư mục bpf/)
 INCLUDES := -I$(OUTPUT) -I. -Ibpf
 
 CFLAGS := -g -O2 -Wall $(INCLUDES)
-BPF_CFLAGS := -g -O2 -target bpf -D__TARGET_ARCH_$(ARCH) $(INCLUDES)
+
+# !!! FIX QUAN TRỌNG: Thêm -mcpu=v3 !!!
+BPF_CFLAGS := -g -O2 -target bpf -mcpu=v3 -D__TARGET_ARCH_$(ARCH) $(INCLUDES)
 
 # --- RULES ---
 
-all: $(TARGET) $(TEST_TARGET)
+all: $(TARGET)
 
 # 1. Tạo thư mục output
 $(OUTPUT):
@@ -52,17 +53,13 @@ $(SKEL_H): $(BPF_OBJ)
 	$(BPFTOOL) gen skeleton $(BPF_OBJ) > $@
 
 # 5. Biên dịch Loader (main.c)
+# FIX: Thêm -lrt -pthread để tránh lỗi linker
 $(TARGET): main.c $(SKEL_H)
 	@echo "  CC      $(TARGET)"
-	$(CLANG) $(CFLAGS) main.c -o $@ -lbpf -lelf -lz -z noexecstack
-
-# 6. Biên dịch Test Workload (cpu_bound.c)
-$(TEST_TARGET): $(TEST_SRC)
-	@echo "  CC      $(TEST_TARGET)"
-	$(CLANG) -O2 $(TEST_SRC) -o $(TEST_TARGET)
+	$(CLANG) $(CFLAGS) main.c -o $@ -lbpf -lelf -lz -lrt -pthread -z noexecstack
 
 # Dọn dẹp
 clean:
-	rm -rf $(OUTPUT) $(TARGET) $(TEST_TARGET)
+	rm -rf $(OUTPUT) $(TARGET)
 
 .PHONY: all clean
