@@ -6,6 +6,11 @@
 #include <errno.h>
 #include <sys/resource.h>
 #include <bpf/libbpf.h>
+
+typedef uint64_t u64;
+typedef uint32_t u32;
+typedef int32_t s32;
+
 #include "mlfq.skel.h"
 
 static volatile bool exiting = false;

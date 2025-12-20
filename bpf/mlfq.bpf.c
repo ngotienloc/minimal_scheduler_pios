@@ -1,9 +1,13 @@
 // bpf/mlfq_final_production_v3.bpf.c
-#include "vmlinux.h"
+#include ".output/vmlinux.h"
+#undef BPF_STRUCT_OPS
 #include <bpf/bpf_helpers.h>
 #include <bpf/bpf_tracing.h>
+//#include <bpf/bpf_struct_ops.h>
+#include <linux/sched/ext.h>
 #include <bpf/bpf_core_read.h>
 #include "scx_common.bpf.h"
+ #include "common.h"
 
 char LICENSE[] SEC("license") = "GPL";
 
@@ -13,6 +17,7 @@ char LICENSE[] SEC("license") = "GPL";
 #define DSQ_MED     2
 #define DSQ_LOW     3
 #define NUM_DSQ     4
+
 
 /* Time slices in nanoseconds */
 const volatile u64 SLICE_NS[NUM_DSQ] = {
@@ -24,8 +29,16 @@ const volatile u64 SLICE_NS[NUM_DSQ] = {
 
 const volatile u64 BOOST_NS = 500ULL * 1000 * 1000; /* 500ms */
 
-/* --- MAPS --- */
+/* Helper Sleepable*/
+// Cho phép helper sleepable
+/*static __u64 BPF_FUNC(scx_bpf_dsq_insert,
+                      struct task_struct *p, u32 lvl, u64 slice, u64 flags)
+__attribute__((section(".bpf_helpers"), used));
+*/
 
+/* --- MAPS --- */
+static long (*bpf_map_get_next_key)(void *map, const void *key, void *next_key) = (void *) 5;
+//extern int bpf_map_get_next_key(void *map, const void *key, void *next_key) __ksym;
 /* Remaining time slice per PID */
 struct {
     __uint(type, BPF_MAP_TYPE_HASH);
@@ -58,6 +71,15 @@ struct {
     __type(value, u64);
 } task_enq_ns SEC(".maps");
 
+/* User-space create DSQ */
+struct {
+    __uint(type, BPF_MAP_TYPE_ARRAY);
+    __uint(max_entries, NUM_DSQ);
+    __type(key, u32);
+    __type(value, u32);
+} dsq_trigger SEC(".maps");
+
+
 /* CPU -> current PID map */
 #define MAX_CPUS 1024
 struct {
@@ -77,16 +99,29 @@ struct {
 
 
 /* --- INIT --- */
-s32 BPF_STRUCT_OPS(mlfq_init) {
+SEC("struct_ops/init_task")
+//*s32*/ int BPF_STRUCT_OPS_SLEEPABLE(mlfq_init) {
+s32 mlfq_init_task(struct task_struct *p, struct scx_init_task_args *args){
+//static int mlfq_init(void)
+//{
     /* Initialize DSQs */
-    for (int i = 0; i < NUM_DSQ; i++) {
-        if (scx_bpf_create_dsq(i, -1) != 0) {
-            return -1;
-        }
-    }
-
+    /*static bool dsq_created = false;	
+    
+    if (!dsq_created){
+    	for (int i = 0; i < NUM_DSQ; i++) 
+		scx_bpf_create_dsq(i, -1); 
+	dsq_created = true;
+    } */
     /* FIX: Initialize aging cursor to -1 (sentinel) */
     /* Map mặc định là 0, ta cần set -1 để báo hiệu "bắt đầu từ đầu" */
+    /*for (u32 i = 0; i < 4; i++) {
+        bpf_map_update_elem(&dsq_trigger, &i, &i, BPF_ANY);
+    }*/
+    bpf_map_update_elem(&dsq_trigger, &(u32){0}, &(u32){0}, BPF_ANY);
+    bpf_map_update_elem(&dsq_trigger, &(u32){1}, &(u32){1}, BPF_ANY);
+    bpf_map_update_elem(&dsq_trigger, &(u32){2}, &(u32){2}, BPF_ANY);
+    bpf_map_update_elem(&dsq_trigger, &(u32){3}, &(u32){3}, BPF_ANY);
+
     u32 idx = 0;
     s32 start_sentinel = -1;
     bpf_map_update_elem(&aging_cursor, &idx, &start_sentinel, BPF_ANY);
@@ -96,8 +131,11 @@ s32 BPF_STRUCT_OPS(mlfq_init) {
 }
 
 /* --- EXIT TASK --- */
-void BPF_STRUCT_OPS(mlfq_exit_task, struct task_struct *p) {
-    if (!p) return;
+//void BPF_STRUCT_OPS(mlfq_exit_task, struct task_struct *p) {
+void BPF_STRUCT_OPS(mlfq_exit_task,
+                    struct task_struct *p,
+                    struct scx_exit_task_args *args){
+    if(!p) return;
     s32 pid = BPF_CORE_READ(p, pid);
     if (pid == 0) return;
 
@@ -107,7 +145,7 @@ void BPF_STRUCT_OPS(mlfq_exit_task, struct task_struct *p) {
     bpf_map_delete_elem(&task_enq_ns, &pid);
 
     /* Safe CPU cleanup */
-    s32 cpu_of_task = scx_bpf_task_cpu(p);
+    s32 cpu_of_task = BPF_CORE_READ(p, thread_info.cpu) /*scx_bpf_task_cpu(p)*/;
     if (cpu_of_task >= 0 && cpu_of_task < MAX_CPUS) {
         u32 cpu_idx = (u32)cpu_of_task;
         s32 *curr = bpf_map_lookup_elem(&cpu_curr_pid, &cpu_idx);
@@ -135,17 +173,23 @@ void BPF_STRUCT_OPS(mlfq_enable, struct task_struct *p) {
 }
 
 /* --- ENQUEUE --- */
-void BPF_STRUCT_OPS(mlfq_enqueue, struct task_struct *p, u64 enq_flags)
+SEC("struct_ops/mlfq_enqueue")
+//void mlfq_enqueue(struct task_struct *p, u64 enq_flags)
+u64 BPF_STRUCT_OPS(mlfq_enqueue, struct task_struct *p, u64 enq_flags)
 {
-    if (!p) return;
-    s32 pid = BPF_CORE_READ(p, pid);
-    if (pid == 0) return; /* Skip swapper explicitly */
+    //if (!p) return 0 ;
+    //s32 pid = /*BPF_CORE_READ(p, pid);*/ p->pid;
+    //if (pid == 0) return 0; /* Skip swapper explicitly */
+    //u64 flags = enq_flags & 0xffffffffULL;
+    /*s32 pid = bpf_get_current_pid_tgid() & 0xFFFFFFFF;
+    if (pid == 0)  
+        return 0 ;
+
     
-    /* 1) Record enqueue time */
     u64 now = bpf_ktime_get_ns();
     bpf_map_update_elem(&task_enq_ns, &pid, &now, BPF_ANY);
 
-    /* 2) Fetch logic */
+    
     u32 lvl = DSQ_HIGHEST;
     u64 slice = SLICE_NS[lvl];
     u32 *plevel = bpf_map_lookup_elem(&task_queue, &pid);
@@ -157,13 +201,11 @@ void BPF_STRUCT_OPS(mlfq_enqueue, struct task_struct *p, u64 enq_flags)
     } else {
         bpf_map_update_elem(&task_queue, &pid, &lvl, BPF_ANY);
         bpf_map_update_elem(&task_slice, &pid, &slice, BPF_ANY);
-    }
+    }*/
 
-    /* 3) Insert */
-    scx_bpf_dsq_insert(p, lvl, slice, enq_flags);
-
-    /* 4) Preemption check */
-    int cpu = scx_bpf_task_cpu(p);
+    
+    //scx_bpf_dsq_insert(p, DSQ_HIGHEST, /*lvl,slice*/5000000ULL, enq_flags);
+    /*int cpu = BPF_CORE_READ(p, thread_info.cpu);
     if (cpu >= 0 && cpu < MAX_CPUS) {
         u32 cpu_idx = (u32)cpu;
         s32 *curr_pid_ptr = bpf_map_lookup_elem(&cpu_curr_pid, &cpu_idx);
@@ -173,13 +215,13 @@ void BPF_STRUCT_OPS(mlfq_enqueue, struct task_struct *p, u64 enq_flags)
             u32 curr_lvl = DSQ_LOW; 
             u32 *cl = bpf_map_lookup_elem(&task_queue, &curr_pid);
             if (cl) curr_lvl = *cl;
-
-            /* Preempt if new task has higher priority (lower lvl) */
+            
             if (lvl < curr_lvl) {
                 scx_bpf_kick_cpu(cpu, SCX_KICK_PREEMPT);
             }
         }
-    }
+    }*/
+    return 0 ;
 }
 
 /* --- DISPATCH --- */
@@ -198,18 +240,20 @@ void BPF_STRUCT_OPS(mlfq_dispatch, s32 cpu, struct task_struct *prev)
     /* FIX: Logic duyệt map an toàn với sentinel -1 */
     #pragma unroll
     for (int i = 0; i < 5; i++) {
-        int ret;
-        if (current_key == -1) {
+        long ret;
+         if (current_key == -1) {
             /* Nếu key là -1, gọi với NULL để lấy phần tử ĐẦU TIÊN của map */
-            ret = bpf_map_get_next_key(&task_enq_ns, NULL, &next_key);
+            ret = bpf_map_get_next_key(&task_enq_ns, NULL, &next_key);  
         } else {
             /* Nếu key khác -1, tìm key kế tiếp */
-            ret = bpf_map_get_next_key(&task_enq_ns, &current_key, &next_key);
+            ret = bpf_map_get_next_key(&task_enq_ns, 
+					(current_key == -1) ? NULL : &current_key
+					, &next_key);
         }
 
         if (ret != 0) {
             /* Hết map, reset về -1 để lần sau duyệt lại từ đầu */
-            current_key = -1;
+            //current_key == -1;
             break; 
         }
 
@@ -239,7 +283,7 @@ void BPF_STRUCT_OPS(mlfq_dispatch, s32 cpu, struct task_struct *prev)
 
     /* Dispatch tasks */
     for (int i = 0; i < NUM_DSQ; i++) {
-        if (scx_bpf_dsq_move_to_local(i))
+       // if (scx_bpf_dsq_move_to_local(i))
             return;
     }
 }
@@ -266,10 +310,14 @@ void BPF_STRUCT_OPS(mlfq_stopping, struct task_struct *p, bool runnable)
         if (remaining == 0) {
             u32 old_lvl = *plevel;
             u32 next_lvl = (old_lvl < NUM_DSQ - 1) ? old_lvl + 1 : old_lvl;
-            u64 reset_slice = SLICE_NS[next_lvl];
-
-            bpf_map_update_elem(&task_queue, &pid, &next_lvl, BPF_ANY);
-            bpf_map_update_elem(&task_slice, &pid, &reset_slice, BPF_ANY);
+        	if (next_lvl >= NUM_DSQ) {
+	    	    next_lvl = NUM_DSQ -1;
+		}
+		if (next_lvl < NUM_DSQ){
+                    u64 reset_slice = SLICE_NS[next_lvl];
+                    bpf_map_update_elem(&task_queue, &pid, &next_lvl, BPF_ANY);
+                    bpf_map_update_elem(&task_slice, &pid, &reset_slice, BPF_ANY);
+		}
         } else {
             bpf_map_update_elem(&task_slice, &pid, &remaining, BPF_ANY);
         }
@@ -277,7 +325,7 @@ void BPF_STRUCT_OPS(mlfq_stopping, struct task_struct *p, bool runnable)
 
     bpf_map_delete_elem(&task_start_ns, &pid);
 
-    int cpu = scx_bpf_task_cpu(p);
+    int cpu = BPF_CORE_READ(p, thread_info.cpu);
     if (cpu >= 0 && cpu < MAX_CPUS) {
         u32 cpu_idx = (u32)cpu;
         s32 *curr = bpf_map_lookup_elem(&cpu_curr_pid, &cpu_idx);
@@ -318,7 +366,7 @@ void BPF_STRUCT_OPS(mlfq_exit, struct scx_exit_info *ei) {
     bpf_printk("mlfq: unloaded\n");
 }
 
-SEC(".struct_ops.link")
+/*SEC(".struct_ops")
 struct sched_ext_ops mlfq_ops = {
     .enable     = (void *)mlfq_enable,
     .enqueue    = (void *)mlfq_enqueue,
@@ -327,6 +375,24 @@ struct sched_ext_ops mlfq_ops = {
     .running    = (void *)mlfq_running,
     .exit       = (void *)mlfq_exit,
     .exit_task  = (void *)mlfq_exit_task,
-    .init       = (void *)mlfq_init,
+    //.init       = mlfq_init,
+    //.init       = (void *)mlfq_init,
     .name       = "mlfq",
+    .flags      = SCX_OPS_KEEP_BUILTIN_IDLE,	
+}; */
+
+
+SEC(".struct_ops")
+struct sched_ext_ops mlfq_ops = {
+    .init_task  = (void *)mlfq_init_task,
+    .enable     = mlfq_enable,
+    .enqueue    = (void *)mlfq_enqueue,
+    .dispatch   = mlfq_dispatch,
+    .stopping   = mlfq_stopping,
+    .running    = mlfq_running,
+    .exit       = mlfq_exit,
+    .exit_task  = mlfq_exit_task,
+    .name       = "mlfq",
+    .flags      = SCX_OPS_KEEP_BUILTIN_IDLE,
 };
+ 

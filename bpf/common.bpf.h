@@ -25,6 +25,7 @@
 #include <bpf/bpf_tracing.h>
 #include <asm-generic/errno.h>
 #include "user_exit_info.bpf.h"
+#include "
 #include "enum_defs.autogen.h"
 
 #define PF_IDLE				0x00000002	/* I am an IDLE thread */
