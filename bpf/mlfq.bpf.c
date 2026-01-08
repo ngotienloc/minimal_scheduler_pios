@@ -191,7 +191,7 @@ void BPF_PROG(mlfq_enqueue, struct task_struct *p, u64 enq_flags)
 
     
     u64 now = bpf_ktime_get_ns();
-    bpf_map_update_elem(&task_enq_ns, &pid, &now, BPF_ANY);
+    bpf_map_update_elem(&task_enq_ns, &pid, &now, BPF_NOEXIST);
 
     
     u32 lvl = DSQ_HIGHEST;
