@@ -1,0 +1,865 @@
+libbpf: loading object 'mlfq_bpf' from buffer
+libbpf: elf: section(3) struct_ops.s/mlfq_init, size 504, link 0, flags 6, type=1
+libbpf: sec 'struct_ops.s/mlfq_init': found program 'mlfq_init' at insn offset 0 (0 bytes), code size 63 insns (504 bytes)
+libbpf: elf: section(4) .relstruct_ops.s/mlfq_init, size 160, link 44, flags 40, type=9
+libbpf: elf: section(5) struct_ops/mlfq_exit_task, size 480, link 0, flags 6, type=1
+libbpf: sec 'struct_ops/mlfq_exit_task': found program 'mlfq_exit_task' at insn offset 0 (0 bytes), code size 60 insns (480 bytes)
+libbpf: elf: section(6) .relstruct_ops/mlfq_exit_task, size 96, link 44, flags 40, type=9
+libbpf: elf: section(7) struct_ops/mlfq_enable, size 336, link 0, flags 6, type=1
+libbpf: sec 'struct_ops/mlfq_enable': found program 'mlfq_enable' at insn offset 0 (0 bytes), code size 42 insns (336 bytes)
+libbpf: elf: section(8) .relstruct_ops/mlfq_enable, size 80, link 44, flags 40, type=9
+libbpf: elf: section(9) struct_ops/mlfq_enqueue, size 880, link 0, flags 6, type=1
+libbpf: sec 'struct_ops/mlfq_enqueue': found program 'mlfq_enqueue' at insn offset 0 (0 bytes), code size 110 insns (880 bytes)
+libbpf: elf: section(10) .relstruct_ops/mlfq_enqueue, size 208, link 44, flags 40, type=9
+libbpf: elf: section(11) struct_ops/mlfq_dispatch, size 18896, link 0, flags 6, type=1
+libbpf: sec 'struct_ops/mlfq_dispatch': found program 'mlfq_dispatch' at insn offset 0 (0 bytes), code size 2362 insns (18896 bytes)
+libbpf: elf: section(12) .relstruct_ops/mlfq_dispatch, size 4784, link 44, flags 40, type=9
+libbpf: elf: section(13) struct_ops/mlfq_stopping, size 952, link 0, flags 6, type=1
+libbpf: sec 'struct_ops/mlfq_stopping': found program 'mlfq_stopping' at insn offset 0 (0 bytes), code size 119 insns (952 bytes)
+libbpf: elf: section(14) .relstruct_ops/mlfq_stopping, size 160, link 44, flags 40, type=9
+libbpf: elf: section(15) struct_ops/mlfq_running, size 520, link 0, flags 6, type=1
+libbpf: sec 'struct_ops/mlfq_running': found program 'mlfq_running' at insn offset 0 (0 bytes), code size 65 insns (520 bytes)
+libbpf: elf: section(16) .relstruct_ops/mlfq_running, size 112, link 44, flags 40, type=9
+libbpf: elf: section(17) struct_ops/mlfq_exit, size 40, link 0, flags 6, type=1
+libbpf: sec 'struct_ops/mlfq_exit': found program 'mlfq_exit' at insn offset 0 (0 bytes), code size 5 insns (40 bytes)
+libbpf: elf: section(18) .relstruct_ops/mlfq_exit, size 16, link 44, flags 40, type=9
+libbpf: elf: section(19) license, size 4, link 0, flags 3, type=1
+libbpf: license of mlfq_bpf is GPL
+libbpf: elf: section(20) .rodata, size 431, link 0, flags 2, type=1
+libbpf: elf: section(21) .struct_ops, size 424, link 0, flags 3, type=1
+libbpf: elf: section(22) .rel.struct_ops, size 128, link 44, flags 40, type=9
+libbpf: elf: section(23) .maps, size 224, link 0, flags 3, type=1
+libbpf: elf: section(34) .BTF, size 42336, link 0, flags 0, type=1
+libbpf: elf: section(36) .BTF.ext, size 16516, link 0, flags 0, type=1
+libbpf: elf: section(44) .symtab, size 2136, link 1, flags 0, type=2
+libbpf: looking for externs among 89 symbols...
+libbpf: collected 6 externs total
+libbpf: extern (ksym) #0: symbol 43, name scx_bpf_consume___compat
+libbpf: extern (ksym) #1: symbol 24, name scx_bpf_create_dsq
+libbpf: extern (ksym) #2: symbol 37, name scx_bpf_dispatch___compat
+libbpf: extern (ksym) #3: symbol 36, name scx_bpf_dsq_insert
+libbpf: extern (ksym) #4: symbol 42, name scx_bpf_dsq_move_to_local
+libbpf: extern (ksym) #5: symbol 39, name scx_bpf_kick_cpu
+libbpf: map 'task_slice': at sec_idx 23, offset 0.
+libbpf: map 'task_slice': found type = 1.
+libbpf: map 'task_slice': found key [8], sz = 4.
+libbpf: map 'task_slice': found value [11], sz = 8.
+libbpf: map 'task_slice': found max_entries = 8192.
+libbpf: map 'task_queue': at sec_idx 23, offset 32.
+libbpf: map 'task_queue': found type = 1.
+libbpf: map 'task_queue': found key [8], sz = 4.
+libbpf: map 'task_queue': found value [17], sz = 4.
+libbpf: map 'task_queue': found max_entries = 8192.
+libbpf: map 'task_start_ns': at sec_idx 23, offset 64.
+libbpf: map 'task_start_ns': found type = 1.
+libbpf: map 'task_start_ns': found key [8], sz = 4.
+libbpf: map 'task_start_ns': found value [11], sz = 8.
+libbpf: map 'task_start_ns': found max_entries = 8192.
+libbpf: map 'task_enq_ns': at sec_idx 23, offset 96.
+libbpf: map 'task_enq_ns': found type = 1.
+libbpf: map 'task_enq_ns': found key [8], sz = 4.
+libbpf: map 'task_enq_ns': found value [11], sz = 8.
+libbpf: map 'task_enq_ns': found max_entries = 8192.
+libbpf: map 'dsq_trigger': at sec_idx 23, offset 128.
+libbpf: map 'dsq_trigger': found type = 2.
+libbpf: map 'dsq_trigger': found key [17], sz = 4.
+libbpf: map 'dsq_trigger': found value [17], sz = 4.
+libbpf: map 'dsq_trigger': found max_entries = 4.
+libbpf: map 'cpu_curr_pid': at sec_idx 23, offset 160.
+libbpf: map 'cpu_curr_pid': found type = 2.
+libbpf: map 'cpu_curr_pid': found key [17], sz = 4.
+libbpf: map 'cpu_curr_pid': found value [8], sz = 4.
+libbpf: map 'cpu_curr_pid': found max_entries = 1024.
+libbpf: map 'aging_cursor': at sec_idx 23, offset 192.
+libbpf: map 'aging_cursor': found type = 2.
+libbpf: map 'aging_cursor': found key [17], sz = 4.
+libbpf: map 'aging_cursor': found value [8], sz = 4.
+libbpf: map 'aging_cursor': found max_entries = 1.
+libbpf: map 'mlfq_bpf.rodata' (global data): at sec_idx 20, offset 0, flags 480.
+libbpf: map 7 is "mlfq_bpf.rodata"
+libbpf: struct_ops init: struct sched_ext_ops(type_id=400) mlfq_ops found at offset 0
+libbpf: sec '.relstruct_ops.s/mlfq_init': collecting relocation for section(3) 'struct_ops.s/mlfq_init'
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #0: insn #5 against 'scx_bpf_create_dsq'
+libbpf: prog 'mlfq_init': found extern #1 'scx_bpf_create_dsq' (sym 24) for insn #5
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #1: insn #8 against 'dsq_trigger'
+libbpf: prog 'mlfq_init': found map 4 (dsq_trigger, sec 23, off 128) for insn #8
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #2: insn #18 against 'scx_bpf_create_dsq'
+libbpf: prog 'mlfq_init': found extern #1 'scx_bpf_create_dsq' (sym 24) for insn #18
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #3: insn #19 against 'dsq_trigger'
+libbpf: prog 'mlfq_init': found map 4 (dsq_trigger, sec 23, off 128) for insn #19
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #4: insn #29 against 'scx_bpf_create_dsq'
+libbpf: prog 'mlfq_init': found extern #1 'scx_bpf_create_dsq' (sym 24) for insn #29
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #5: insn #30 against 'dsq_trigger'
+libbpf: prog 'mlfq_init': found map 4 (dsq_trigger, sec 23, off 128) for insn #30
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #6: insn #40 against 'scx_bpf_create_dsq'
+libbpf: prog 'mlfq_init': found extern #1 'scx_bpf_create_dsq' (sym 24) for insn #40
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #7: insn #41 against 'dsq_trigger'
+libbpf: prog 'mlfq_init': found map 4 (dsq_trigger, sec 23, off 128) for insn #41
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #8: insn #53 against 'aging_cursor'
+libbpf: prog 'mlfq_init': found map 6 (aging_cursor, sec 23, off 192) for insn #53
+libbpf: sec '.relstruct_ops.s/mlfq_init': relo #9: insn #57 against '.rodata'
+libbpf: prog 'mlfq_init': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 57
+libbpf: sec '.relstruct_ops/mlfq_exit_task': collecting relocation for section(5) 'struct_ops/mlfq_exit_task'
+libbpf: sec '.relstruct_ops/mlfq_exit_task': relo #0: insn #14 against 'task_slice'
+libbpf: prog 'mlfq_exit_task': found map 0 (task_slice, sec 23, off 0) for insn #14
+libbpf: sec '.relstruct_ops/mlfq_exit_task': relo #1: insn #18 against 'task_queue'
+libbpf: prog 'mlfq_exit_task': found map 1 (task_queue, sec 23, off 32) for insn #18
+libbpf: sec '.relstruct_ops/mlfq_exit_task': relo #2: insn #22 against 'task_start_ns'
+libbpf: prog 'mlfq_exit_task': found map 2 (task_start_ns, sec 23, off 64) for insn #22
+libbpf: sec '.relstruct_ops/mlfq_exit_task': relo #3: insn #26 against 'task_enq_ns'
+libbpf: prog 'mlfq_exit_task': found map 3 (task_enq_ns, sec 23, off 96) for insn #26
+libbpf: sec '.relstruct_ops/mlfq_exit_task': relo #4: insn #42 against 'cpu_curr_pid'
+libbpf: prog 'mlfq_exit_task': found map 5 (cpu_curr_pid, sec 23, off 160) for insn #42
+libbpf: sec '.relstruct_ops/mlfq_exit_task': relo #5: insn #55 against 'cpu_curr_pid'
+libbpf: prog 'mlfq_exit_task': found map 5 (cpu_curr_pid, sec 23, off 160) for insn #55
+libbpf: sec '.relstruct_ops/mlfq_enable': collecting relocation for section(7) 'struct_ops/mlfq_enable'
+libbpf: sec '.relstruct_ops/mlfq_enable': relo #0: insn #13 against 'SLICE_NS'
+libbpf: prog 'mlfq_enable': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 13
+libbpf: sec '.relstruct_ops/mlfq_enable': relo #1: insn #21 against 'task_queue'
+libbpf: prog 'mlfq_enable': found map 1 (task_queue, sec 23, off 32) for insn #21
+libbpf: sec '.relstruct_ops/mlfq_enable': relo #2: insn #28 against 'task_slice'
+libbpf: prog 'mlfq_enable': found map 0 (task_slice, sec 23, off 0) for insn #28
+libbpf: sec '.relstruct_ops/mlfq_enable': relo #3: insn #33 against 'task_enq_ns'
+libbpf: prog 'mlfq_enable': found map 3 (task_enq_ns, sec 23, off 96) for insn #33
+libbpf: sec '.relstruct_ops/mlfq_enable': relo #4: insn #37 against 'task_start_ns'
+libbpf: prog 'mlfq_enable': found map 2 (task_start_ns, sec 23, off 64) for insn #37
+libbpf: sec '.relstruct_ops/mlfq_enqueue': collecting relocation for section(9) 'struct_ops/mlfq_enqueue'
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #0: insn #18 against 'task_enq_ns'
+libbpf: prog 'mlfq_enqueue': found map 3 (task_enq_ns, sec 23, off 96) for insn #18
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #1: insn #25 against 'SLICE_NS'
+libbpf: prog 'mlfq_enqueue': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 25
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #2: insn #29 against 'task_queue'
+libbpf: prog 'mlfq_enqueue': found map 1 (task_queue, sec 23, off 32) for insn #29
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #3: insn #34 against 'task_slice'
+libbpf: prog 'mlfq_enqueue': found map 0 (task_slice, sec 23, off 0) for insn #34
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #4: insn #49 against 'task_queue'
+libbpf: prog 'mlfq_enqueue': found map 1 (task_queue, sec 23, off 32) for insn #49
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #5: insn #56 against 'task_slice'
+libbpf: prog 'mlfq_enqueue': found map 0 (task_slice, sec 23, off 0) for insn #56
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #6: insn #63 against 'scx_bpf_dsq_insert'
+libbpf: prog 'mlfq_enqueue': found extern #3 'scx_bpf_dsq_insert' (sym 36) for insn #63
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #7: insn #68 against 'scx_bpf_dsq_insert'
+libbpf: prog 'mlfq_enqueue': found extern #3 'scx_bpf_dsq_insert' (sym 36) for insn #68
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #8: insn #72 against 'scx_bpf_dispatch___compat'
+libbpf: prog 'mlfq_enqueue': found extern #2 'scx_bpf_dispatch___compat' (sym 37) for insn #72
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #9: insn #85 against 'cpu_curr_pid'
+libbpf: prog 'mlfq_enqueue': found map 5 (cpu_curr_pid, sec 23, off 160) for insn #85
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #10: insn #96 against 'task_queue'
+libbpf: prog 'mlfq_enqueue': found map 1 (task_queue, sec 23, off 32) for insn #96
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #11: insn #104 against '__SCX_KICK_PREEMPT'
+libbpf: prog 'mlfq_enqueue': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 104
+libbpf: sec '.relstruct_ops/mlfq_enqueue': relo #12: insn #108 against 'scx_bpf_kick_cpu'
+libbpf: prog 'mlfq_enqueue': found extern #5 'scx_bpf_kick_cpu' (sym 39) for insn #108
+libbpf: sec '.relstruct_ops/mlfq_dispatch': collecting relocation for section(11) 'struct_ops/mlfq_dispatch'
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #0: insn #7 against 'aging_cursor'
+libbpf: prog 'mlfq_dispatch': found map 6 (aging_cursor, sec 23, off 192) for insn #7
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #1: insn #19 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #19
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #2: insn #29 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #29
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #3: insn #40 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #40
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #4: insn #47 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 47
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #5: insn #53 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 53
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #6: insn #61 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #61
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #7: insn #68 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #68
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #8: insn #75 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #75
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #9: insn #82 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 82
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #10: insn #93 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #93
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #11: insn #100 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #100
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #12: insn #109 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #109
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #13: insn #116 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 116
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #14: insn #122 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 122
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #15: insn #130 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #130
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #16: insn #137 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #137
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #17: insn #144 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #144
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #18: insn #151 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 151
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #19: insn #162 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #162
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #20: insn #172 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #172
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #21: insn #181 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #181
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #22: insn #188 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 188
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #23: insn #194 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 194
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #24: insn #202 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #202
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #25: insn #209 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #209
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #26: insn #216 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #216
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #27: insn #223 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 223
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #28: insn #234 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #234
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #29: insn #244 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #244
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #30: insn #253 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #253
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #31: insn #260 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 260
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #32: insn #266 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 266
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #33: insn #274 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #274
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #34: insn #281 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #281
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #35: insn #288 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #288
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #36: insn #295 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 295
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #37: insn #306 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #306
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #38: insn #316 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #316
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #39: insn #325 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #325
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #40: insn #332 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 332
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #41: insn #338 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 338
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #42: insn #346 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #346
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #43: insn #353 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #353
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #44: insn #360 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #360
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #45: insn #367 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 367
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #46: insn #378 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #378
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #47: insn #388 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #388
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #48: insn #397 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #397
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #49: insn #404 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 404
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #50: insn #410 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 410
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #51: insn #418 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #418
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #52: insn #425 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #425
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #53: insn #432 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #432
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #54: insn #439 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 439
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #55: insn #450 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #450
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #56: insn #460 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #460
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #57: insn #469 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #469
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #58: insn #476 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 476
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #59: insn #482 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 482
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #60: insn #490 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #490
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #61: insn #497 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #497
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #62: insn #504 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #504
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #63: insn #511 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 511
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #64: insn #522 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #522
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #65: insn #532 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #532
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #66: insn #541 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #541
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #67: insn #548 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 548
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #68: insn #554 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 554
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #69: insn #562 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #562
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #70: insn #569 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #569
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #71: insn #576 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #576
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #72: insn #583 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 583
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #73: insn #594 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #594
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #74: insn #604 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #604
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #75: insn #613 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #613
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #76: insn #620 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 620
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #77: insn #626 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 626
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #78: insn #634 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #634
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #79: insn #641 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #641
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #80: insn #648 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #648
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #81: insn #655 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 655
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #82: insn #666 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #666
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #83: insn #676 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #676
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #84: insn #685 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #685
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #85: insn #692 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 692
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #86: insn #698 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 698
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #87: insn #706 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #706
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #88: insn #713 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #713
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #89: insn #720 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #720
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #90: insn #727 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 727
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #91: insn #738 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #738
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #92: insn #748 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #748
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #93: insn #757 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #757
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #94: insn #764 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 764
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #95: insn #770 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 770
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #96: insn #778 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #778
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #97: insn #785 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #785
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #98: insn #792 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #792
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #99: insn #799 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 799
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #100: insn #810 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #810
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #101: insn #820 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #820
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #102: insn #829 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #829
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #103: insn #836 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 836
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #104: insn #842 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 842
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #105: insn #850 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #850
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #106: insn #857 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #857
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #107: insn #864 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #864
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #108: insn #871 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 871
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #109: insn #882 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #882
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #110: insn #892 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #892
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #111: insn #901 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #901
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #112: insn #908 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 908
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #113: insn #914 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 914
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #114: insn #922 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #922
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #115: insn #929 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #929
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #116: insn #936 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #936
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #117: insn #943 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 943
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #118: insn #954 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #954
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #119: insn #964 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #964
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #120: insn #973 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #973
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #121: insn #980 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 980
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #122: insn #986 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 986
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #123: insn #994 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #994
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #124: insn #1001 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1001
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #125: insn #1008 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1008
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #126: insn #1015 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1015
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #127: insn #1026 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1026
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #128: insn #1036 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1036
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #129: insn #1045 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1045
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #130: insn #1052 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1052
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #131: insn #1058 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1058
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #132: insn #1066 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1066
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #133: insn #1073 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1073
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #134: insn #1080 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1080
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #135: insn #1087 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1087
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #136: insn #1098 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1098
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #137: insn #1108 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1108
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #138: insn #1117 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1117
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #139: insn #1124 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1124
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #140: insn #1130 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1130
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #141: insn #1138 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1138
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #142: insn #1145 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1145
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #143: insn #1152 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1152
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #144: insn #1159 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1159
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #145: insn #1170 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1170
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #146: insn #1180 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1180
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #147: insn #1189 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1189
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #148: insn #1196 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1196
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #149: insn #1202 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1202
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #150: insn #1210 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1210
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #151: insn #1217 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1217
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #152: insn #1224 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1224
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #153: insn #1231 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1231
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #154: insn #1242 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1242
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #155: insn #1252 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1252
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #156: insn #1261 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1261
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #157: insn #1268 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1268
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #158: insn #1274 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1274
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #159: insn #1282 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1282
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #160: insn #1289 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1289
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #161: insn #1296 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1296
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #162: insn #1303 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1303
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #163: insn #1314 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1314
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #164: insn #1324 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1324
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #165: insn #1333 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1333
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #166: insn #1340 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1340
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #167: insn #1346 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1346
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #168: insn #1354 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1354
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #169: insn #1361 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1361
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #170: insn #1368 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1368
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #171: insn #1375 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1375
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #172: insn #1386 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1386
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #173: insn #1396 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1396
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #174: insn #1405 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1405
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #175: insn #1412 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1412
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #176: insn #1418 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1418
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #177: insn #1426 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1426
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #178: insn #1433 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1433
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #179: insn #1440 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1440
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #180: insn #1447 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1447
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #181: insn #1458 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1458
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #182: insn #1468 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1468
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #183: insn #1477 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1477
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #184: insn #1484 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1484
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #185: insn #1490 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1490
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #186: insn #1498 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1498
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #187: insn #1505 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1505
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #188: insn #1512 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1512
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #189: insn #1519 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1519
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #190: insn #1530 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1530
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #191: insn #1540 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1540
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #192: insn #1549 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1549
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #193: insn #1556 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1556
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #194: insn #1562 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1562
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #195: insn #1570 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1570
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #196: insn #1577 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1577
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #197: insn #1584 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1584
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #198: insn #1591 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1591
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #199: insn #1602 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1602
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #200: insn #1612 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1612
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #201: insn #1621 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1621
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #202: insn #1628 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1628
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #203: insn #1634 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1634
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #204: insn #1642 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1642
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #205: insn #1649 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1649
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #206: insn #1656 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1656
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #207: insn #1663 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1663
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #208: insn #1674 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1674
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #209: insn #1684 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1684
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #210: insn #1693 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1693
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #211: insn #1700 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1700
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #212: insn #1706 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1706
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #213: insn #1714 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1714
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #214: insn #1721 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1721
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #215: insn #1728 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1728
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #216: insn #1735 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1735
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #217: insn #1746 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1746
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #218: insn #1756 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1756
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #219: insn #1765 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1765
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #220: insn #1772 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1772
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #221: insn #1778 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1778
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #222: insn #1786 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1786
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #223: insn #1793 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1793
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #224: insn #1800 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1800
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #225: insn #1807 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1807
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #226: insn #1818 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1818
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #227: insn #1828 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1828
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #228: insn #1837 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1837
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #229: insn #1844 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1844
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #230: insn #1850 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1850
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #231: insn #1858 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1858
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #232: insn #1865 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1865
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #233: insn #1872 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1872
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #234: insn #1879 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1879
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #235: insn #1890 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1890
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #236: insn #1900 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1900
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #237: insn #1909 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1909
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #238: insn #1916 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1916
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #239: insn #1922 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1922
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #240: insn #1930 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #1930
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #241: insn #1937 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #1937
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #242: insn #1944 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1944
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #243: insn #1951 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1951
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #244: insn #1962 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1962
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #245: insn #1972 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1972
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #246: insn #1981 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #1981
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #247: insn #1988 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1988
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #248: insn #1994 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 1994
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #249: insn #2002 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #2002
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #250: insn #2009 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #2009
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #251: insn #2016 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2016
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #252: insn #2023 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2023
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #253: insn #2034 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2034
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #254: insn #2044 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2044
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #255: insn #2053 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2053
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #256: insn #2060 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2060
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #257: insn #2066 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2066
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #258: insn #2074 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #2074
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #259: insn #2081 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #2081
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #260: insn #2088 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2088
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #261: insn #2095 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2095
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #262: insn #2106 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2106
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #263: insn #2116 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2116
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #264: insn #2125 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2125
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #265: insn #2132 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2132
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #266: insn #2138 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2138
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #267: insn #2146 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #2146
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #268: insn #2153 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #2153
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #269: insn #2160 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2160
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #270: insn #2167 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2167
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #271: insn #2178 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2178
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #272: insn #2188 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2188
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #273: insn #2197 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2197
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #274: insn #2204 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2204
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #275: insn #2210 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2210
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #276: insn #2218 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #2218
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #277: insn #2225 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #2225
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #278: insn #2232 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2232
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #279: insn #2239 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2239
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #280: insn #2249 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2249
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #281: insn #2258 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2258
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #282: insn #2265 against 'BOOST_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2265
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #283: insn #2271 against 'SLICE_NS'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2271
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #284: insn #2279 against 'task_queue'
+libbpf: prog 'mlfq_dispatch': found map 1 (task_queue, sec 23, off 32) for insn #2279
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #285: insn #2286 against 'task_slice'
+libbpf: prog 'mlfq_dispatch': found map 0 (task_slice, sec 23, off 0) for insn #2286
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #286: insn #2293 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2293
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #287: insn #2300 against '.rodata'
+libbpf: prog 'mlfq_dispatch': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 2300
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #288: insn #2312 against 'task_enq_ns'
+libbpf: prog 'mlfq_dispatch': found map 3 (task_enq_ns, sec 23, off 96) for insn #2312
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #289: insn #2323 against 'aging_cursor'
+libbpf: prog 'mlfq_dispatch': found map 6 (aging_cursor, sec 23, off 192) for insn #2323
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #290: insn #2327 against 'scx_bpf_dsq_move_to_local'
+libbpf: prog 'mlfq_dispatch': found extern #4 'scx_bpf_dsq_move_to_local' (sym 42) for insn #2327
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #291: insn #2331 against 'scx_bpf_dsq_move_to_local'
+libbpf: prog 'mlfq_dispatch': found extern #4 'scx_bpf_dsq_move_to_local' (sym 42) for insn #2331
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #292: insn #2335 against 'scx_bpf_dsq_move_to_local'
+libbpf: prog 'mlfq_dispatch': found extern #4 'scx_bpf_dsq_move_to_local' (sym 42) for insn #2335
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #293: insn #2339 against 'scx_bpf_dsq_move_to_local'
+libbpf: prog 'mlfq_dispatch': found extern #4 'scx_bpf_dsq_move_to_local' (sym 42) for insn #2339
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #294: insn #2343 against 'scx_bpf_dsq_move_to_local'
+libbpf: prog 'mlfq_dispatch': found extern #4 'scx_bpf_dsq_move_to_local' (sym 42) for insn #2343
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #295: insn #2346 against 'scx_bpf_consume___compat'
+libbpf: prog 'mlfq_dispatch': found extern #0 'scx_bpf_consume___compat' (sym 43) for insn #2346
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #296: insn #2350 against 'scx_bpf_consume___compat'
+libbpf: prog 'mlfq_dispatch': found extern #0 'scx_bpf_consume___compat' (sym 43) for insn #2350
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #297: insn #2354 against 'scx_bpf_consume___compat'
+libbpf: prog 'mlfq_dispatch': found extern #0 'scx_bpf_consume___compat' (sym 43) for insn #2354
+libbpf: sec '.relstruct_ops/mlfq_dispatch': relo #298: insn #2358 against 'scx_bpf_consume___compat'
+libbpf: prog 'mlfq_dispatch': found extern #0 'scx_bpf_consume___compat' (sym 43) for insn #2358
+libbpf: sec '.relstruct_ops/mlfq_stopping': collecting relocation for section(13) 'struct_ops/mlfq_stopping'
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #0: insn #16 against 'task_start_ns'
+libbpf: prog 'mlfq_stopping': found map 2 (task_start_ns, sec 23, off 64) for insn #16
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #1: insn #21 against 'task_slice'
+libbpf: prog 'mlfq_stopping': found map 0 (task_slice, sec 23, off 0) for insn #21
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #2: insn #26 against 'task_queue'
+libbpf: prog 'mlfq_stopping': found map 1 (task_queue, sec 23, off 32) for insn #26
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #3: insn #56 against 'SLICE_NS'
+libbpf: prog 'mlfq_stopping': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 56
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #4: insn #65 against 'task_queue'
+libbpf: prog 'mlfq_stopping': found map 1 (task_queue, sec 23, off 32) for insn #65
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #5: insn #72 against 'task_slice'
+libbpf: prog 'mlfq_stopping': found map 0 (task_slice, sec 23, off 0) for insn #72
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #6: insn #80 against 'task_slice'
+libbpf: prog 'mlfq_stopping': found map 0 (task_slice, sec 23, off 0) for insn #80
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #7: insn #86 against 'task_start_ns'
+libbpf: prog 'mlfq_stopping': found map 2 (task_start_ns, sec 23, off 64) for insn #86
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #8: insn #101 against 'cpu_curr_pid'
+libbpf: prog 'mlfq_stopping': found map 5 (cpu_curr_pid, sec 23, off 160) for insn #101
+libbpf: sec '.relstruct_ops/mlfq_stopping': relo #9: insn #114 against 'cpu_curr_pid'
+libbpf: prog 'mlfq_stopping': found map 5 (cpu_curr_pid, sec 23, off 160) for insn #114
+libbpf: sec '.relstruct_ops/mlfq_running': collecting relocation for section(15) 'struct_ops/mlfq_running'
+libbpf: sec '.relstruct_ops/mlfq_running': relo #0: insn #18 against 'cpu_curr_pid'
+libbpf: prog 'mlfq_running': found map 5 (cpu_curr_pid, sec 23, off 160) for insn #18
+libbpf: sec '.relstruct_ops/mlfq_running': relo #1: insn #26 against 'task_enq_ns'
+libbpf: prog 'mlfq_running': found map 3 (task_enq_ns, sec 23, off 96) for insn #26
+libbpf: sec '.relstruct_ops/mlfq_running': relo #2: insn #32 against 'task_start_ns'
+libbpf: prog 'mlfq_running': found map 2 (task_start_ns, sec 23, off 64) for insn #32
+libbpf: sec '.relstruct_ops/mlfq_running': relo #3: insn #37 against 'task_queue'
+libbpf: prog 'mlfq_running': found map 1 (task_queue, sec 23, off 32) for insn #37
+libbpf: sec '.relstruct_ops/mlfq_running': relo #4: insn #44 against 'SLICE_NS'
+libbpf: prog 'mlfq_running': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 44
+libbpf: sec '.relstruct_ops/mlfq_running': relo #5: insn #52 against 'task_queue'
+libbpf: prog 'mlfq_running': found map 1 (task_queue, sec 23, off 32) for insn #52
+libbpf: sec '.relstruct_ops/mlfq_running': relo #6: insn #59 against 'task_slice'
+libbpf: prog 'mlfq_running': found map 0 (task_slice, sec 23, off 0) for insn #59
+libbpf: sec '.relstruct_ops/mlfq_exit': collecting relocation for section(17) 'struct_ops/mlfq_exit'
+libbpf: sec '.relstruct_ops/mlfq_exit': relo #0: insn #0 against '.rodata'
+libbpf: prog 'mlfq_exit': found data map 7 (mlfq_bpf.rodata, sec 20, off 0) for insn 0
+libbpf: struct_ops reloc mlfq_ops: for 35 value 0 shdr_idx 9 rel->r_offset 8 map->sec_offset 0 name 629 ('mlfq_enqueue')
+libbpf: struct_ops reloc mlfq_ops: for 40 value 0 shdr_idx 11 rel->r_offset 24 map->sec_offset 0 name 529 ('mlfq_dispatch')
+libbpf: struct_ops reloc mlfq_ops: for 45 value 0 shdr_idx 15 rel->r_offset 48 map->sec_offset 0 name 587 ('mlfq_running')
+libbpf: struct_ops reloc mlfq_ops: for 44 value 0 shdr_idx 13 rel->r_offset 56 map->sec_offset 0 name 558 ('mlfq_stopping')
+libbpf: struct_ops reloc mlfq_ops: for 27 value 0 shdr_idx 5 rel->r_offset 136 map->sec_offset 0 name 499 ('mlfq_exit_task')
+libbpf: struct_ops reloc mlfq_ops: for 33 value 0 shdr_idx 7 rel->r_offset 144 map->sec_offset 0 name 709 ('mlfq_enable')
+libbpf: struct_ops reloc mlfq_ops: for 23 value 0 shdr_idx 3 rel->r_offset 248 map->sec_offset 0 name 182 ('mlfq_init')
+libbpf: struct_ops reloc mlfq_ops: for 46 value 0 shdr_idx 17 rel->r_offset 256 map->sec_offset 0 name 155 ('mlfq_exit')
+libbpf: object 'mlfq_bpf': failed (-95) to create BPF token from '/sys/fs/bpf', skipping optional step...
+libbpf: loaded kernel BTF from '/sys/kernel/btf/vmlinux'
+libbpf: extern (func ksym) 'scx_bpf_consume___compat': resolved to vmlinux [102062]
+libbpf: extern (func ksym) 'scx_bpf_create_dsq': resolved to vmlinux [102076]
+libbpf: extern (func ksym) 'scx_bpf_dispatch___compat': resolved to vmlinux [102081]
+libbpf: extern (func ksym) 'scx_bpf_kick_cpu': resolved to vmlinux [102122]
+libbpf: extern 'scx_bpf_dsq_insert' (weak): not resolved, defaulting to zero
+libbpf: extern 'scx_bpf_dsq_move_to_local' (weak): not resolved, defaulting to zero
+libbpf: struct_ops init_kern mlfq_ops: type_id:400 kern_type_id:7995 kern_vtype_id:8151
+libbpf: struct_ops init_kern mlfq_ops: func ptr enqueue is set to prog mlfq_enqueue from data(+8) to kern_data(+8)
+libbpf: struct_ops init_kern mlfq_ops: func ptr dispatch is set to prog mlfq_dispatch from data(+24) to kern_data(+24)
+libbpf: struct_ops init_kern mlfq_ops: func ptr running is set to prog mlfq_running from data(+48) to kern_data(+48)
+libbpf: struct_ops init_kern mlfq_ops: func ptr stopping is set to prog mlfq_stopping from data(+56) to kern_data(+56)
+libbpf: struct_ops init_kern mlfq_ops: func ptr exit_task is set to prog mlfq_exit_task from data(+136) to kern_data(+136)
+libbpf: struct_ops init_kern mlfq_ops: func ptr enable is set to prog mlfq_enable from data(+144) to kern_data(+144)
+libbpf: struct_ops init_kern mlfq_ops: func ptr init is set to prog mlfq_init from data(+248) to kern_data(+248)
+libbpf: struct_ops init_kern mlfq_ops: func ptr exit is set to prog mlfq_exit from data(+256) to kern_data(+256)
+libbpf: struct_ops init_kern mlfq_ops: copy dispatch_max_batch 4 bytes from data(+264) to kern_data(+264)
+libbpf: struct_ops init_kern mlfq_ops: copy flags 8 bytes from data(+272) to kern_data(+272)
+libbpf: struct_ops init_kern mlfq_ops: copy timeout_ms 4 bytes from data(+280) to kern_data(+280)
+libbpf: struct_ops init_kern mlfq_ops: copy exit_dump_len 4 bytes from data(+284) to kern_data(+284)
+libbpf: struct_ops init_kern mlfq_ops: copy hotplug_seq 8 bytes from data(+288) to kern_data(+288)
+libbpf: struct_ops init_kern mlfq_ops: copy name 128 bytes from data(+296) to kern_data(+296)
+libbpf: sec 'struct_ops/mlfq_exit_task': found 2 CO-RE relocations
+libbpf: CO-RE relocating [45] struct task_struct: found target candidate [204] struct task_struct in [vmlinux]
+libbpf: prog 'mlfq_exit_task': relo #0: <byte_off> [45] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_exit_task': relo #0: matching candidate #0 <byte_off> [204] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_exit_task': relo #0: patched insn #2 (ALU/ALU64) imm 1672 -> 1672
+libbpf: prog 'mlfq_exit_task': relo #1: <byte_off> [45] struct task_struct.thread_info.cpu (0:0:2 @ offset 16)
+libbpf: prog 'mlfq_exit_task': relo #1: matching candidate #0 <byte_off> [204] struct task_struct.thread_info.cpu (0:0:2 @ offset 16)
+libbpf: prog 'mlfq_exit_task': relo #1: patched insn #30 (ALU/ALU64) imm 16 -> 16
+libbpf: sec 'struct_ops/mlfq_enable': found 1 CO-RE relocations
+libbpf: prog 'mlfq_enable': relo #0: <byte_off> [45] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_enable': relo #0: matching candidate #0 <byte_off> [204] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_enable': relo #0: patched insn #2 (ALU/ALU64) imm 1672 -> 1672
+libbpf: sec 'struct_ops/mlfq_enqueue': found 2 CO-RE relocations
+libbpf: prog 'mlfq_enqueue': relo #0: <byte_off> [45] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_enqueue': relo #0: matching candidate #0 <byte_off> [204] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_enqueue': relo #0: patched insn #0 (ALU/ALU64) imm 1672 -> 1672
+libbpf: prog 'mlfq_enqueue': relo #1: <byte_off> [45] struct task_struct.thread_info.cpu (0:0:2 @ offset 16)
+libbpf: prog 'mlfq_enqueue': relo #1: matching candidate #0 <byte_off> [204] struct task_struct.thread_info.cpu (0:0:2 @ offset 16)
+libbpf: prog 'mlfq_enqueue': relo #1: patched insn #73 (ALU/ALU64) imm 16 -> 16
+libbpf: sec 'struct_ops/mlfq_stopping': found 2 CO-RE relocations
+libbpf: prog 'mlfq_stopping': relo #0: <byte_off> [45] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_stopping': relo #0: matching candidate #0 <byte_off> [204] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_stopping': relo #0: patched insn #2 (ALU/ALU64) imm 1672 -> 1672
+libbpf: prog 'mlfq_stopping': relo #1: <byte_off> [45] struct task_struct.thread_info.cpu (0:0:2 @ offset 16)
+libbpf: prog 'mlfq_stopping': relo #1: matching candidate #0 <byte_off> [204] struct task_struct.thread_info.cpu (0:0:2 @ offset 16)
+libbpf: prog 'mlfq_stopping': relo #1: patched insn #89 (ALU/ALU64) imm 16 -> 16
+libbpf: sec 'struct_ops/mlfq_running': found 1 CO-RE relocations
+libbpf: prog 'mlfq_running': relo #0: <byte_off> [45] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_running': relo #0: matching candidate #0 <byte_off> [204] struct task_struct.pid (0:85 @ offset 1672)
+libbpf: prog 'mlfq_running': relo #0: patched insn #2 (ALU/ALU64) imm 1672 -> 1672
+libbpf: prog 'mlfq_enqueue': relo #8: poisoning insn #68 that calls kfunc 'scx_bpf_dsq_insert'
+libbpf: prog 'mlfq_dispatch': relo #291: poisoning insn #2331 that calls kfunc 'scx_bpf_dsq_move_to_local'
+libbpf: prog 'mlfq_dispatch': relo #292: poisoning insn #2335 that calls kfunc 'scx_bpf_dsq_move_to_local'
+libbpf: prog 'mlfq_dispatch': relo #293: poisoning insn #2339 that calls kfunc 'scx_bpf_dsq_move_to_local'
+libbpf: prog 'mlfq_dispatch': relo #294: poisoning insn #2343 that calls kfunc 'scx_bpf_dsq_move_to_local'
+libbpf: map 'task_slice': created successfully, fd=3
+libbpf: map 'task_queue': created successfully, fd=4
+libbpf: map 'task_start_ns': created successfully, fd=5
+libbpf: map 'task_enq_ns': created successfully, fd=6
+libbpf: map 'dsq_trigger': created successfully, fd=7
+libbpf: map 'cpu_curr_pid': created successfully, fd=8
+libbpf: map 'aging_cursor': created successfully, fd=9
+libbpf: map 'mlfq_bpf.rodata': created successfully, fd=10
+libbpf: map 'mlfq_ops': created successfully, fd=11

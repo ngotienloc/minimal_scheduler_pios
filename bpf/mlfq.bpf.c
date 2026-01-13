@@ -185,14 +185,16 @@ void BPF_PROG(mlfq_enqueue, struct task_struct *p, u64 enq_flags)
     //s32 pid = /*BPF_CORE_READ(p, pid);*/ p->pid;
     //if (pid == 0) return 0; /* Skip swapper explicitly */
     u64 flags = (u64)enq_flags;
-    s32 pid = bpf_get_current_pid_tgid() & 0xFFFFFFFF;
+    //s32 pid = bpf_get_current_pid_tgid() & 0xFFFFFFFF;
+    s32 pid = BPF_CORE_READ(p, pid);
     if (pid == 0)  
         return  ;
 
     
     u64 now = bpf_ktime_get_ns();
-    bpf_map_update_elem(&task_enq_ns, &pid, &now, BPF_NOEXIST);
-
+    //bpf_map_update_elem(&task_enq_ns, &pid, &now, BPF_NOEXIST);
+   // bpf_map_update_elem(&task_enq_ns, &pid, &now, BPF_ANY);
+      bpf_map_update_elem(&task_enq_ns, &pid, &now, BPF_NOEXIST);
     
     u32 lvl = DSQ_HIGHEST;
     u64 slice = SLICE_NS[lvl];
@@ -236,28 +238,29 @@ void BPF_STRUCT_OPS(mlfq_dispatch, s32 cpu, struct task_struct *prev)
     
     /* Lấy vị trí duyệt map lần trước */
     s32 *cursor_ptr = bpf_map_lookup_elem(&aging_cursor, &cursor_idx);
-    s32 current_key = -1;
+    /*s32 current_key = -1;
     if (cursor_ptr) current_key = *cursor_ptr;
-
+*/
+    s32 current_key = (cursor_ptr) ? *cursor_ptr : -1;
     s32 next_key;
     
     /* FIX: Logic duyệt map an toàn với sentinel -1 */
     #pragma unroll
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 32; i++) {
         long ret;
          if (current_key == -1) {
             /* Nếu key là -1, gọi với NULL để lấy phần tử ĐẦU TIÊN của map */
             ret = bpf_map_get_next_key(&task_enq_ns, NULL, &next_key);  
         } else {
             /* Nếu key khác -1, tìm key kế tiếp */
-            ret = bpf_map_get_next_key(&task_enq_ns, 
-					(current_key == -1) ? NULL : &current_key
-					, &next_key);
+            /*ret = bpf_map_get_next_key(&task_enq_ns, 
+					(current_key == -1) ? NULL : &current_key, &next_key);*/
+	    ret = bpf_map_get_next_key(&task_enq_ns, &current_key, &next_key);
         }
 
         if (ret != 0) {
             /* Hết map, reset về -1 để lần sau duyệt lại từ đầu */
-            //current_key == -1;
+            current_key = -1;
             break; 
         }
 
@@ -280,6 +283,7 @@ void BPF_STRUCT_OPS(mlfq_dispatch, s32 cpu, struct task_struct *prev)
         }
         
         current_key = next_key;
+	bpf_printk("MLFQ: Dispatching on CPU %d\n", cpu);
     }
     
     /* Lưu lại cursor cho lần dispatch sau */
@@ -398,6 +402,6 @@ struct sched_ext_ops mlfq_ops = {
     .exit       = (void *)mlfq_exit,
     .exit_task  = (void *)mlfq_exit_task,
     .name       = "mlfq",
-    .flags      = SCX_OPS_KEEP_BUILTIN_IDLE,
+    .flags      = SCX_OPS_KEEP_BUILTIN_IDLE | SCX_OPS_ENQ_LAST,
 };
  
